@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="th"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ลอยกระทงออนไลน์</title>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600&family=Prompt:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--mw:clamp(78px,17vmin,150px);color-scheme:dark}
+html,body{margin:0;height:100%;background:#0d0638;font-family:Prompt,system-ui,sans-serif;color:#fff}
+#stage{position:fixed;inset:0;overflow:hidden;background:linear-gradient(180deg,#0d0638 0%,#2a1067 26%,#5b2a8c 40%,#c24f8a 49%,#f08a6b 51%)}
+#stage>*{position:absolute}
+.shore{left:0;right:0;top:36%;height:14.2%;width:100%}
+.river{left:0;right:0;top:50%;bottom:0;overflow:hidden;background:linear-gradient(#27407f,#142a63 30%,#0a1445)}
+.wv{left:0;top:0;width:calc(100% + 120px);height:100%;animation:wv 5s linear infinite}
+@keyframes wv{to{transform:translateX(-120px)}}
+.refl{right:12%;width:var(--mw);top:0;height:60%;background:repeating-linear-gradient(0deg,rgba(255,236,170,.6) 0 2px,transparent 2px 10px);-webkit-mask-image:radial-gradient(ellipse 30% 100% at 50% 0,#000,transparent);mask-image:radial-gradient(ellipse 30% 100% at 50% 0,#000,transparent);animation:sh 3s ease-in-out infinite alternate}
+@keyframes sh{to{transform:scaleX(.7);opacity:.6}}
+.pier{left:0;right:0;top:58%;height:8%;background:repeating-linear-gradient(90deg,transparent 0 58px,#0004 58px 60px),linear-gradient(#8f6240 0 40%,#4a3020 40%);box-shadow:0 10px 24px #0009}
+#fx{inset:0;width:100%;height:100%;pointer-events:none}
+.moon{top:7%;right:12%;width:var(--mw);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fffbe6,#ffe9a8 60%,#f6c96b);box-shadow:0 0 40px 18px rgba(255,230,150,.35),0 0 120px 60px rgba(255,200,120,.2)}
+.kh{top:60%;width:22px;height:30px;border-radius:8px 8px 10px 10px;background:linear-gradient(#ffd27a,#ff8a3d);box-shadow:0 0 18px 6px rgba(255,160,70,.5);animation:rise var(--d) linear infinite;animation-delay:var(--l)}
+@keyframes rise{0%{transform:translate(0,0);opacity:0}10%{opacity:.9}100%{transform:translate(var(--x),-62vh);opacity:0}}
+#chars{left:0;right:0;bottom:37.4%;display:flex;justify-content:center;gap:2vw;pointer-events:none}
+.pc{position:relative;width:min(44vw,190px);aspect-ratio:200/320;animation:in .8s both}
+@keyframes in{from{opacity:0;transform:translateY(24px)}}
+.pc>svg{width:100%;height:100%;display:block;overflow:visible}
+.eye{transform-box:fill-box;transform-origin:center;transition:transform .4s}
+.pray{animation:bow 3s ease-in-out infinite}
+@keyframes bow{50%{transform:translateY(5px) rotate(2deg)}}
+.pray .eye{transform:scaleY(.12)}
+.kr{position:absolute;left:50%;top:60%;width:56%;transform:translate(-50%,-50%);transition:transform .8s ease}
+.pray .kr{transform:translate(-50%,-78%)}
+.rel .kr{transform:translate(-50%,-22%)}
+.rel{animation:lean 1.4s ease-in-out}
+@keyframes lean{40%{transform:translateY(10px) rotate(4deg)}}
+.kr svg{width:100%;display:block;overflow:visible}
+.gl{position:absolute;left:-35%;right:-35%;top:-10%;bottom:-45%;background:radial-gradient(closest-side,rgba(255,190,90,.6),transparent);opacity:.6;animation:fk 1.2s ease-in-out infinite alternate;pointer-events:none}
+.pray .gl{opacity:1}
+@keyframes fk{to{transform:scale(1.12)}}
+.fl{transform-origin:60px 30px;animation:fl .35s ease-in-out infinite alternate}
+@keyframes fl{to{transform:scale(.88,1.1) rotate(3deg)}}
+.bub{left:50%;bottom:100%;transform:translateX(-50%);width:max-content;max-width:170px;padding:7px 11px;margin-bottom:2px;border-radius:14px;background:rgba(255,248,220,.94);color:#4a2060;font:13px/1.35 Mali,sans-serif;text-align:center;opacity:0;transition:opacity .6s}
+.pray .bub{opacity:1}.rel .bub{opacity:0}
+.nm{left:50%;bottom:-28px;transform:translateX(-50%);padding:2px 10px;border-radius:99px;background:#0006;font:600 12px Prompt;white-space:nowrap}
+.pc>div{position:absolute}.pc>.kr{position:absolute}
+#layer{inset:0;pointer-events:none;overflow:hidden}
+#layer .kr{transition:none}
+.tag{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);width:150px;margin-bottom:6px;text-align:center;font:12px Mali,sans-serif;text-shadow:0 0 8px #ffb86b;animation:to 8s forwards}
+@keyframes to{70%{opacity:1}100%{opacity:0}}
+.rip{position:absolute;width:60px;height:16px;border:2px solid rgba(190,220,255,.6);border-radius:50%;animation:rip 2.4s ease-out forwards}
+@keyframes rip{from{transform:translate(-50%,-50%) scale(.3);opacity:.9}to{transform:translate(-50%,-50%) scale(2.6);opacity:0}}
+.sp{position:absolute;width:6px;height:6px;border-radius:50%;background:#ffe27a;box-shadow:0 0 8px #ffd25a;animation:sp 1.4s ease-out forwards}
+@keyframes sp{to{transform:translate(var(--dx),var(--dy)) scale(.2);opacity:0}}
+header{top:calc(14px + env(safe-area-inset-top,0px));left:18px;pointer-events:none}
+h1{margin:0;font:600 clamp(28px,6vw,42px) Mali,sans-serif;background:linear-gradient(90deg,#ffe27a,#ff8fc0);-webkit-background-clip:text;background-clip:text;color:transparent}
+header p{margin:2px 0 0;font-size:12px;color:#ffffffb8}
+.card{left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom,0px));margin:0 auto;max-width:560px;max-height:40%;overflow:auto;box-sizing:border-box;padding:14px;border-radius:22px;background:rgba(20,13,66,.76);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.18);box-shadow:0 10px 40px #0008}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+.seg{display:flex;background:#ffffff1a;border-radius:99px;padding:3px}
+.seg button{border:0;background:none;color:#fff;padding:6px 14px;border-radius:99px;font:inherit;cursor:pointer}
+.seg .on{background:linear-gradient(90deg,#ffd25a,#ff8fc0);color:#2a1050;font-weight:600}
+.cols{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:12px;margin-bottom:12px}
+.col{display:flex;flex-direction:column;align-items:center;gap:8px;min-width:0}
+.ph{width:58px;height:58px;flex:none;border-radius:50%;border:2px dashed #ffd25a;display:grid;place-items:center;text-align:center;font-size:20px;cursor:pointer;overflow:hidden}
+.ph small{font-size:9px;line-height:1}.ph img{width:100%;height:100%;object-fit:cover}
+.nmi,textarea{width:100%;box-sizing:border-box;background:#ffffff14;border:1px solid #ffffff30;border-radius:12px;color:#fff;padding:8px 10px;font:14px Prompt,sans-serif;resize:none}
+.sw{display:flex;gap:7px}.sw i{width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer}
+.sw .on{border-color:#fff;box-shadow:0 0 10px #fff}
+.go{width:100%;border:0;border-radius:16px;padding:12px;font:600 16px Prompt,sans-serif;color:#2a1050;background:linear-gradient(90deg,#ffd25a,#ff8fc0);cursor:pointer}
+.ghost{flex:none;border:1px solid #ffffff40;background:none;color:#fff;border-radius:16px;padding:12px 16px;font:14px Prompt,sans-serif;cursor:pointer}
+.glow{animation:gl 1.6s ease-in-out infinite alternate}
+@keyframes gl{to{box-shadow:0 0 28px 6px #ffb86b}}
+.chips{display:flex;gap:6px;overflow-x:auto;margin-bottom:10px;padding-bottom:2px}
+.chips button{flex:none;border:1px solid #ffffff40;background:#ffffff14;color:#fff;border-radius:99px;padding:5px 11px;font:12px Prompt,sans-serif;cursor:pointer}
+.pp{text-align:center;font-size:14px}
+.card small{color:#ffffffb8}
+#end{left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom,0px));margin:0 auto;max-width:360px;text-align:center;padding:12px;border-radius:20px;background:rgba(20,13,66,.76);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.18);display:none}
+#end b{display:block;margin-bottom:10px;font:600 16px Mali,sans-serif}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid #ffd25a;outline-offset:2px}
+@media(prefers-reduced-motion:reduce){.kh,.wv{animation:none}}
+.ph{position:relative}
+.ph input,.cam input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:0}
+.cam{position:relative;flex:none;width:40px;height:40px;border-radius:50%;background:#ffffff1a;display:grid;place-items:center;font-size:18px;overflow:hidden;cursor:pointer}
+.me{display:flex;gap:10px;align-items:center;margin-bottom:10px}
+.mc{flex:1;display:flex;flex-direction:column;gap:8px;min-width:0}
+.sw i:nth-child(1){background:#ff5fa2}.sw i:nth-child(2){background:#ffb02e}.sw i:nth-child(3){background:#8a5cff}.sw i:nth-child(4){background:#16b8e8}
+.card{max-height:44%}
+textarea{margin-bottom:8px}
+.inv{background:#ffffff12;border-radius:14px;padding:8px;margin-bottom:10px;display:grid;gap:6px;font-size:12px}
+.l{display:flex;gap:6px;margin-top:6px}.l .nmi{flex:1;font-size:12px}
+.l .ghost{padding:8px 12px;font-size:12px}
+details{margin-bottom:10px;font-size:12px;color:#ffffffb8}
+.slot{display:grid;place-items:center;text-align:center;font-size:13px;color:#fff9;border:2px dashed #ffffff55;border-radius:50% 50% 14px 14px;animation:none}
+#snd{top:calc(12px + env(safe-area-inset-top,0px));right:12px;width:40px;height:40px;border-radius:50%;border:1px solid #ffffff40;background:rgba(20,13,66,.6);color:#fff;font-size:18px;cursor:pointer}
+#cd{inset:0;display:none;place-items:center;font:600 min(34vw,160px) Mali,sans-serif;color:#ffe27a;text-shadow:0 0 30px #ff9f5a;pointer-events:none}
+@keyframes pop{from{transform:scale(.4);opacity:0}30%{opacity:1}to{transform:scale(1.25);opacity:0}}
+#tt{left:50%;top:calc(70px + env(safe-area-inset-top,0px));transform:translateX(-50%);max-width:86%;padding:8px 14px;border-radius:18px;background:rgba(20,13,66,.92);font-size:13px;text-align:center;opacity:0;transition:opacity .3s;pointer-events:none}
+</style></head><body>
+<div id="stage">
+<svg class="shore" viewBox="0 0 800 100" preserveAspectRatio="xMidYMax slice"><g fill="#140a3a"><path d="M0 100V86Q100 78 220 86T450 84T650 86T800 82V100Z"/><path d="M168 86L176 68Q181 58 190 52L194 36L198 14L202 36L206 52Q215 58 220 68L228 86Z"/><path d="M520 86V64H600V86ZM508 66L560 34L612 66Z"/><circle cx="90" cy="76" r="16"/><circle cx="300" cy="78" r="13"/><circle cx="420" cy="76" r="15"/><circle cx="700" cy="74" r="17"/><circle cx="760" cy="78" r="12"/></g><g fill="#ffd25a"><circle cx="548" cy="74" r="2.2"/><circle cx="572" cy="74" r="2.2"/><circle cx="198" cy="70" r="2"/><circle cx="198" cy="40" r="1.6"/></g></svg>
+<div class="river"><svg class="wv"><defs><pattern id="wp" width="120" height="30" patternUnits="userSpaceOnUse"><path d="M0 15Q30 3 60 15T120 15" fill="none" stroke="#9fc4ff" stroke-opacity=".22" stroke-width="1.5"/></pattern></defs><rect width="100%" height="100%" fill="url(#wp)"/></svg><div class="refl"></div></div>
+<div class="pier"></div>
+<canvas id="fx"></canvas>
+<div class="moon"></div>
+<div id="chars"></div>
+<div id="layer"></div>
+<header><h1>ลอยกระทง</h1><p>ขอขมาแม่น้ำ ปล่อยความทุกข์ ขอพรให้สมหวัง</p></header>
+<section id="panel" class="card"></section>
+<button id="snd" aria-label="เสียง">🔊</button><div id="cd"></div><div id="tt"></div>
+<div id="end"><b>ขอให้ทุกคำอธิษฐานเป็นจริง ✨</b><button class="go" id="again">ลอยอีกครั้ง</button></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<script>
+const $=s=>document.querySelector(s),stage=$('#stage'),chars=$('#chars'),panel=$('#panel'),layer=$('#layer'),end=$('#end');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const P=[['#ff5fa2','#ffc2dd','#7a1f5a'],['#ffb02e','#ffe29a','#8a3d00'],['#8a5cff','#d7c4ff','#2f1a7a'],['#16b8e8','#b8ecff','#0b4a7a']];
+const chips=['สุขภาพแข็งแรง','โชคดีมีชัย','สมหวังในความรัก','เรียนเก่งสอบผ่าน','ครอบครัวมีความสุข','การงานก้าวหน้า'];
+const BASE=location.href.split('#')[0],cd=$('#cd'),tt=$('#tt'),snd=$('#snd');
+let me={name:'',c:0,photo:'',sm:'',wish:'',s:'setup'},stg='setup',online=false,room=null,code='',sig='',hadF=0;
+const toast=s=>{tt.textContent=s;tt.style.opacity=1;clearTimeout(tt._);tt._=setTimeout(()=>tt.style.opacity=0,3800)};
+const okp=u=>typeof u=='string'&&u.length<12000&&/^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(u)?u:'';
+
+const sfx=(()=>{let ac,mg;const o={on:true,
+init(){if(ac){ac.resume&&ac.resume();return}
+try{ac=new(window.AudioContext||window.webkitAudioContext)()}catch(e){return}
+mg=ac.createGain();mg.gain.value=o.on?1:0;mg.connect(ac.destination);
+const b=ac.createBuffer(1,ac.sampleRate*3,ac.sampleRate),d=b.getChannelData(0);let l=0;for(let i=0;i<d.length;i++){l=(l+.02*(Math.random()*2-1))/1.02;d[i]=l*4}
+const s=ac.createBufferSource();s.buffer=b;s.loop=true;const f=ac.createBiquadFilter();f.type='lowpass';f.frequency.value=600;
+const g=ac.createGain();g.gain.value=1.6;const lf=ac.createOscillator(),lg=ac.createGain();lf.frequency.value=.12;lg.gain.value=200;lf.connect(lg);lg.connect(f.frequency);lf.start();
+s.connect(f);f.connect(g);g.connect(mg);s.start();
+const N=[262,294,330,392,440,524,588,660];let k=3;
+setInterval(()=>{if(!o.on||document.hidden||Math.random()<.45)return;k=Math.max(0,Math.min(7,k+(Math.random()*5|0)-2));o.t(N[k],1.8,.05,0,'triangle');o.t(N[k]*2,.6,.02)},850)},
+t(f,d=1,v=.15,w=0,ty='sine'){if(!ac)return;const x=ac.createOscillator(),g=ac.createGain(),n=ac.currentTime+w;x.type=ty;x.frequency.value=f;g.gain.setValueAtTime(0,n);g.gain.linearRampToValueAtTime(v,n+.01);g.gain.exponentialRampToValueAtTime(.0001,n+d);x.connect(g);g.connect(mg);x.start(n);x.stop(n+d+.05)},
+bell(f=880,v=.16,w=0){o.t(f,1.8,v,w);o.t(f*2.76,.7,v*.3,w);o.t(f*1.5,1.2,v*.4,w)},
+click(){o.t(660,.12,.07)},tick(){o.t(880,.15,.12,0,'triangle')},
+go(){[523,659,784,1047].forEach((f,i)=>o.bell(f,.1,i*.09))},
+sparkle(){for(let i=0;i<7;i++)o.bell(1200+Math.random()*1600,.06,i*.18)},
+splash(){if(!ac)return;const n=ac.currentTime,b=ac.createBuffer(1,ac.sampleRate*.6,ac.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*(1-i/d.length);const s=ac.createBufferSource();s.buffer=b;const f=ac.createBiquadFilter();f.type='bandpass';f.frequency.setValueAtTime(2200,n);f.frequency.exponentialRampToValueAtTime(400,n+.5);const g=ac.createGain();g.gain.value=.5;s.connect(f);f.connect(g);g.connect(mg);s.start(n)},
+toggle(){o.on=!o.on;if(mg)mg.gain.setTargetAtTime(o.on?1:0,ac.currentTime,.05);return o.on}};return o})();
+
+function peerJoin(c,guest){return new Promise((res,rej)=>{
+if(!window.Peer)return rej(new Error('nopeer'));
+const pid='loykrathong-'+c,cbs=[];let conn=null,fp=null,mine=null,peer;
+const note=()=>cbs.forEach(f=>f());
+const room={peers:()=>fp?[{isMe:false,kind:'viewer',presence:fp}]:[],onPeers:f=>{cbs.push(f);return()=>{}},
+presence:o=>{mine=o;if(conn&&conn.open)conn.send(o);return Promise.resolve()},
+leave:()=>{try{peer.destroy()}catch(e){}return Promise.resolve()}};
+const attach=cn=>{conn=cn;cn.on('open',()=>{if(mine)cn.send(mine)});cn.on('data',d=>{fp=d&&typeof d=='object'?d:null;note()});cn.on('close',()=>{fp=null;conn=null;note()})};
+peer=guest?new Peer():new Peer(pid);
+peer.on('open',()=>{if(guest)attach(peer.connect(pid,{reliable:true}));res(room)});
+peer.on('connection',cn=>{if(conn&&conn.open)return cn.close();attach(cn)});
+peer.on('error',e=>{rej(e);if(e.type=='peer-unavailable')toast('ไม่พบห้องนี้ ให้เพื่อนสร้างห้องก่อน หรือเช็กรหัสอีกครั้ง')})})}
+function fr(){if(!room)return null;const p=room.peers().find(q=>!q.isMe&&q.kind=='viewer'&&q.presence&&q.presence.s);if(!p)return null;const x=p.presence;return{nm:String(x.nm||'').slice(0,14),c:((+x.c|0)%4+4)%4,ph:okp(x.ph),w:String(x.w||'').slice(0,60),s:String(x.s)}}
+function setP(){if(room)room.presence({nm:me.name,c:me.c,ph:me.sm||'',w:me.wish,s:me.s}).catch(()=>{})}
+
+function kSVG(a,b){let s='<svg viewBox="0 0 120 100"><ellipse cx="60" cy="74" rx="54" ry="16" fill="#1f8a4c"/><ellipse cx="60" cy="70" rx="48" ry="13" fill="#3fc277"/><g fill="'+b+'" stroke="'+a+'" stroke-width="1.5">';
+[-72,-36,0,36,72].forEach(r=>s+='<ellipse cx="60" cy="48" rx="8.5" ry="20" transform="rotate('+r+' 60 66)"/>');
+s+='</g><rect x="56" y="30" width="8" height="26" rx="2" fill="#fff6dc"/><path d="M44 60L38 30M76 60L82 30" stroke="#a0522d" stroke-width="2"/><circle cx="38" cy="30" r="2" fill="#ff5030"/><circle cx="82" cy="30" r="2" fill="#ff5030"/><g class="fl"><path d="M60 10Q68 21 60 31Q52 21 60 10Z" fill="#ffb02e"/><path d="M60 18Q64 24 60 30Q56 24 60 18Z" fill="#fff6b0"/></g><g fill="'+a+'">';
+[-54,-18,18,54].forEach(r=>s+='<ellipse cx="60" cy="53" rx="7.5" ry="15" transform="rotate('+r+' 60 68)"/>');
+return s+'</g><circle cx="60" cy="62" r="9" fill="#ffc928" stroke="#f08a00" stroke-width="1.5"/></svg>'}
+
+function cSVG(p,i){const[a,b,d]=P[p.c];
+const face=p.photo?'<circle cx="100" cy="72" r="40" fill="#f1c39b"/><image href="'+p.photo+'" x="60" y="32" width="80" height="80" preserveAspectRatio="xMidYMid slice" clip-path="url(#cp'+i+')"/>'
+:'<circle cx="100" cy="72" r="40" fill="#f1c39b"/><ellipse class="eye" cx="86" cy="74" rx="4" ry="5.5" fill="#2a1a2a"/><ellipse class="eye" cx="114" cy="74" rx="4" ry="5.5" fill="#2a1a2a"/><circle cx="78" cy="86" r="6" fill="#ff8fa8" opacity=".5"/><circle cx="122" cy="86" r="6" fill="#ff8fa8" opacity=".5"/><path d="M89 88Q100 98 111 88" stroke="#b5476a" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M60 70Q64 30 100 32Q136 30 140 70Q120 48 100 52Q80 48 60 70Z" fill="#1d1536"/>';
+return '<svg viewBox="0 0 200 320"><defs><clipPath id="cp'+i+'"><circle cx="100" cy="72" r="40"/></clipPath></defs><ellipse cx="100" cy="308" rx="62" ry="8" fill="#0006"/><path d="M58 214Q100 232 142 214L152 302Q100 314 48 302Z" fill="'+d+'"/><path d="M50 300Q100 312 150 300" stroke="#ffd25a" stroke-width="6" fill="none"/><path d="M66 120Q100 108 134 120L142 216Q100 232 58 216Z" fill="'+a+'"/><path d="M72 118L94 114L140 208L116 218Z" fill="#ffd25a" opacity=".92"/><rect x="91" y="104" width="18" height="22" rx="8" fill="#f1c39b"/><path d="M68 130L58 170M132 130L142 170" stroke="'+a+'" stroke-width="20" stroke-linecap="round"/><path d="M58 170L68 204M142 170L132 204" stroke="#f1c39b" stroke-width="13" stroke-linecap="round"/><circle cx="68" cy="206" r="8" fill="#f1c39b"/><circle cx="132" cy="206" r="8" fill="#f1c39b"/><ellipse cx="100" cy="68" rx="47" ry="47" fill="#1d1536"/><circle cx="100" cy="24" r="16" fill="#1d1536"/><circle cx="100" cy="24" r="6" fill="#ffd25a"/>'+face+'<circle cx="100" cy="72" r="40" fill="none" stroke="#ffd25a" stroke-width="4"/><circle cx="138" cy="46" r="10" fill="'+a+'"/><circle cx="138" cy="46" r="4" fill="#fff3b0"/></svg>'}
+
+function chr(p,i,l){const k=P[p.c];return '<div class="pc" id="pc'+i+'"><div class="bub"></div>'+cSVG(p,i)+'<div class="kr"><div class="gl"></div><div class="rot">'+kSVG(k[0],k[1])+'</div></div><div class="nm">'+esc(p.name||l)+'</div></div>'}
+function renderChars(){const f=fr();let h=chr(me,0,'ฉัน');
+if(online)h+=f?chr({name:f.nm,c:f.c,photo:f.ph},1,'เพื่อน'):'<div class="pc slot"><span>🪷<br>รอเพื่อน…</span></div>';
+chars.innerHTML=h;apply()}
+function apply(){if(stg=='go'||stg=='done')return;const f=fr(),a=$('#pc0'),b=$('#pc1'),pr=stg=='pray'||stg=='wait';
+if(a){a.classList.toggle('pray',pr);a.querySelector('.bub').textContent=pr?me.wish:''}
+if(b&&f){const q=f.s=='pray'||f.s=='wait';b.classList.toggle('pray',q);b.querySelector('.bub').textContent=q?f.w:''}}
+function refresh(){const f=fr(),k=JSON.stringify([online,f&&[f.nm,f.c,f.ph.length]]);
+if(k!=sig){sig=k;if(stg=='setup'||stg=='pray'||stg=='wait')renderChars()}else apply();
+if(f&&!hadF)sfx.bell(1175,.12);hadF=!!f;
+const s=$('#st');if(s)s.textContent=f?'เพื่อน'+(f.nm?' ('+f.nm+')':'')+' เข้าห้องแล้ว ✓':'รอเพื่อนเข้าห้อง…';
+if(stg=='wait'&&f&&(f.s=='wait'||f.s=='go'))start()}
+
+function setup(){const link=BASE+'#r-'+code;
+panel.innerHTML=`<div class="row"><b>ผู้ลอย</b><div class="seg"><button data-m="0" class="${online?'':'on'}">คนเดียว</button><button data-m="1" class="${online?'on':''}">ชวนเพื่อน</button></div></div>`
++(online?`<div class="inv"><div>ส่งลิงก์นี้ให้เพื่อน (รหัสห้อง <b>${code}</b>)</div><div class="l"><input class="nmi" id="lk" readonly value="${link}"><button class="ghost" id="cp">คัดลอก</button><button class="ghost" id="sh">แชร์</button></div><div id="st"></div></div>`
+:`<details><summary>มีรหัสห้องจากเพื่อน?</summary><div class="l"><input class="nmi" id="jc" maxlength="6" placeholder="รหัส 6 ตัว"><button class="ghost" id="jn">เข้าร่วม</button></div></details>`)
++`<div class="me"><label class="ph">${me.photo?`<img src="${me.photo}" alt="">`:'📷<small>รูปหน้า</small>'}<input type="file" accept="image/*" id="fi"></label><label class="cam">🤳<input type="file" accept="image/*" capture="user" id="fc"></label><div class="mc"><input class="nmi" id="ni" maxlength="14" placeholder="ชื่อ (ไม่ใส่ก็ได้)" value="${esc(me.name)}"><div class="sw">${P.map((q,k)=>`<i data-k="${k}" class="${me.c==k?'on':''}"></i>`).join('')}</div></div></div><textarea id="wi" maxlength="60" rows="2" placeholder="อธิษฐานว่า… ขอให้…">${esc(me.wish)}</textarea><div class="chips">${chips.map(c=>`<button data-c="${c}">${c}</button>`).join('')}</div><button class="go" id="pr">อธิษฐาน 🙏</button>`;
+refresh()}
+
+async function openRoom(c,g){online=true;code=c;if(g)me.c=1;try{location.hash='r-'+c}catch(e){}renderChars();setup();
+try{room=await peerJoin(c,g);room.onPeers(refresh);setP();refresh()}
+catch(e){online=false;room=null;try{location.hash=''}catch(x){}renderChars();setup();toast('เชื่อมห้องออนไลน์ไม่ได้ ลองสร้างห้องใหม่หรือเช็กอินเทอร์เน็ต ตอนนี้ลอยคนเดียวแทน')}}
+function mode(m){if(m){if(!online)openRoom(Array.from({length:6},()=>'abcdefghjkmnpqrstuvwxyz23456789'[Math.random()*31|0]).join(''))}
+else{if(room){room.leave();room=null}online=false;code='';hadF=0;sig='';try{location.hash=''}catch(e){}renderChars();setup()}}
+function copy(){const l=BASE+'#r-'+code;(navigator.clipboard?navigator.clipboard.writeText(l):Promise.reject()).then(()=>toast('คัดลอกลิงก์แล้ว'),()=>{$('#lk').select();toast('กดค้างที่ลิงก์เพื่อคัดลอก')})}
+function share(){const l=BASE+'#r-'+code;navigator.share?navigator.share({title:'ลอยกระทงด้วยกัน',text:'มาลอยกระทงด้วยกันนะ',url:l}).catch(()=>{}):copy()}
+function joinCode(){const v=($('#jc').value||'').trim().toLowerCase().replace(/^#?r-/,'');if(/^[a-z0-9]{6}$/.test(v))openRoom(v,1);else toast('รหัสห้องมี 6 ตัวอักษร')}
+
+function pray(){me.wish=(me.wish||'').trim()||'ขอให้มีความสุข สมหวังทุกประการ';me.s='pray';stg='pray';setP();apply();sfx.bell(988);
+panel.innerHTML='<div class="pp">🙏 กำลังอธิษฐาน… หลับตา แล้วตั้งจิตให้มั่น</div>';
+setTimeout(()=>{if(stg=='pray')panel.innerHTML='<button class="go glow" id="rd">ลอยกระทง 🪷</button>'},4200)}
+function ready(){me.s='wait';stg='wait';setP();sfx.bell(784,.1);if(!online)return start();panel.innerHTML='<div class="pp">พร้อมแล้ว! รอเพื่อนกดลอยกระทง 🪷</div>';refresh()}
+function start(){if(stg=='go')return;stg='go';me.s='go';setP();panel.style.display='none';
+if(!online){sfx.go();floatIt();return}
+let k=3;(function s(){if(!k){cd.style.display='none';sfx.go();floatIt();return}cd.textContent=k--;cd.style.display='grid';cd.style.animation='none';cd.offsetWidth;cd.style.animation='pop .9s';sfx.tick();setTimeout(s,900)})()}
+
+function shrink(c0){const t=document.createElement('canvas');for(const s of[160,128,96,64])for(const q of[.7,.5,.35]){t.width=t.height=s;t.getContext('2d').drawImage(c0,0,0,s,s);const u=t.toDataURL('image/jpeg',q);if(u.length<12000)return u}return''}
+function ld(f){const r=new FileReader;r.onload=()=>{const im=new Image;im.onload=()=>{const s=Math.min(im.width,im.height),c=document.createElement('canvas');c.width=c.height=320;c.getContext('2d').drawImage(im,(im.width-s)/2,(im.height-s)/2,s,s,0,0,320,320);me.photo=c.toDataURL('image/jpeg',.88);me.sm=shrink(c);setP();renderChars();setup()};im.onerror=()=>toast('เปิดรูปนี้ไม่ได้ ลองเลือกรูปอื่นนะ');im.src=r.result};r.readAsDataURL(f)}
+
+function burst(x,y){sfx.splash();for(let i=0;i<14;i++){const e=document.createElement('i'),a=Math.random()*6.28,d=30+Math.random()*50;e.className='sp';e.style.cssText='left:'+x+'px;top:'+y+'px;--dx:'+Math.cos(a)*d+'px;--dy:'+(Math.sin(a)*d-20)+'px';layer.appendChild(e);setTimeout(()=>e.remove(),1500)}}
+function rip(x,y){const e=document.createElement('i');e.className='rip';e.style.cssText='left:'+x+'px;top:'+y+'px';layer.appendChild(e);setTimeout(()=>e.remove(),2500)}
+
+function sail(kr,x0,y0,lane,SW,SH){const w=kr.offsetWidth,h=kr.offsetHeight,rot=kr.querySelector('.rot'),t0=performance.now(),yw=SH*(.69+.075*lane),sp=(SW-x0+w)/26;let lr=0,sp1=0;
+(function f(now){const t=(now-t0)/1e3;if(t>26){kr.remove();return}
+const x=x0+sp*Math.max(0,t-.8),y=t<1?y0+(yw-y0)*t*t:yw-(t-1)*1.4+Math.sin(t*1.8)*3,sc=t<1?1:Math.max(.62,1-(t-1)*.015);
+if(t>=1&&!sp1){sp1=1;burst(x+w/2,y+h*.8)}
+if(t>=1&&t-lr>.9){lr=t;rip(x+w/2,y+h*.85)}
+kr.style.transform='translate('+x+'px,'+y+'px) scale('+sc+')';rot.style.transform='rotate('+Math.sin(t*1.3)*4+'deg)';kr.style.opacity=t>22?Math.max(0,1-(t-22)/4):1;
+requestAnimationFrame(f)})(t0)}
+
+function floatIt(){const S=stage.getBoundingClientRect(),f=fr(),W=[me.wish,f?f.w:''];
+chars.querySelectorAll('.pc:not(.slot)').forEach((pc,i)=>{pc.classList.remove('pray');pc.classList.add('rel');
+setTimeout(()=>{const kr=pc.querySelector('.kr'),r=kr.getBoundingClientRect();layer.appendChild(kr);kr.style.cssText='left:0;top:0;width:'+r.width+'px';if(W[i])kr.insertAdjacentHTML('beforeend','<div class="tag">'+esc(W[i])+'</div>');sail(kr,r.left-S.left,r.top-S.top,i,S.width,S.height)},850)});
+setTimeout(()=>{stg='done';me.s='done';setP();end.style.display='block';sfx.sparkle()},9500)}
+
+panel.onclick=e=>{const t=e.target.closest('button,i');if(!t)return;const d=t.dataset;sfx.click();
+if(d.m!=null)mode(+d.m);
+else if(d.k){me.c=+d.k;setP();renderChars();setup()}
+else if(d.c){me.wish=d.c;$('#wi').value=d.c}
+else if(t.id=='pr')pray();else if(t.id=='rd')ready();else if(t.id=='cp')copy();else if(t.id=='sh')share();else if(t.id=='jn')joinCode()};
+panel.oninput=e=>{const t=e.target;if(t.id=='wi')me.wish=t.value;if(t.id=='ni'){me.name=t.value;setP();const n=$('#pc0 .nm');if(n)n.textContent=me.name.trim()||'ฉัน'}};
+panel.onchange=e=>{const t=e.target;if(t.type=='file'&&t.files[0])ld(t.files[0])};
+$('#again').onclick=()=>{end.style.display='none';layer.innerHTML='';me.wish='';me.s='setup';stg='setup';setP();renderChars();panel.style.display='';setup()};
+function init(){renderChars();setup();snd.onclick=()=>{snd.textContent=sfx.toggle()?'🔊':'🔇'};addEventListener('pointerdown',()=>sfx.init(),{passive:true});
+const m=(location.hash||'').match(/^#r-([a-z0-9]{6})$/);if(m)openRoom(m[1],1)}
+
+for(let i=0;i<8;i++){const e=document.createElement('i');e.className='kh';e.style.cssText='left:'+(5+i*12+Math.random()*6)+'%;--d:'+(34+Math.random()*26)+'s;--l:-'+Math.random()*40+'s;--x:'+(Math.random()*80-40)+'px;scale:'+(.6+Math.random()*.7);stage.insertBefore(e,chars)}
+
+const cv=$('#fx'),ctx=cv.getContext('2d');let W,H,S=[],F=[];
+function rs(){W=cv.width=innerWidth;H=cv.height=innerHeight;S=Array.from({length:90},()=>({x:Math.random()*W,y:Math.random()*H*.46,r:Math.random()*1.3+.3,p:Math.random()*6}));F=Array.from({length:22},()=>({x:Math.random()*W,y:H*(.5+Math.random()*.45),p:Math.random()*6,c:['#ffe27a','#9bffb0','#ffb3e6'][Math.random()*3|0]}))}
+function dr(t){ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';S.forEach(s=>{ctx.globalAlpha=.35+.65*Math.abs(Math.sin(t/900+s.p));ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,6.3);ctx.fill()});
+F.forEach(f=>{f.p+=.01;ctx.globalAlpha=.5+.5*Math.sin(f.p*3);ctx.fillStyle=ctx.shadowColor=f.c;ctx.shadowBlur=12;ctx.beginPath();ctx.arc(f.x+Math.sin(f.p*1.3)*26,f.y+Math.cos(f.p)*14,2.2,0,6.3);ctx.fill();ctx.shadowBlur=0});requestAnimationFrame(dr)}
+addEventListener('resize',rs);rs();requestAnimationFrame(dr);
+init();
+</script></body></html>
